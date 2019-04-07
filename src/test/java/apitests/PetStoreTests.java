@@ -13,7 +13,6 @@ import bean.Status;
 import factory.PetFactory;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
-import utility.Log;
 
 public class PetStoreTests extends BaseApiTest {
 	protected static final String FIND_BY_STATUS_PATH = "/findByStatus";
@@ -21,7 +20,7 @@ public class PetStoreTests extends BaseApiTest {
 	// post https://petstore.swagger.io/v2/pet/
 	// add new Pet
 	@Test
-	public void postPetStoreTest() {
+	public void addNewPetTest() {
 		Pet testPet = PetFactory.pendingPet();
 		Response response = restService.run(Method.POST, testPet);
 		System.out.println(response.getStatusCode());
@@ -32,7 +31,7 @@ public class PetStoreTests extends BaseApiTest {
 	// put https://petstore.swagger.io/v2/pet/
 	// update existing Pet
 	@Test
-	public void putPetStoreTest() {
+	public void updatePetTest() {
 		Pet testPet = PetFactory.updatedPet();
 		Response response = restService.run(Method.PUT, testPet);
 		response.then().log().status();
@@ -44,7 +43,7 @@ public class PetStoreTests extends BaseApiTest {
 
 	// get https://petstore.swagger.io/v2/pet/1
 	@Test
-	public void getPetStoreTest() {
+	public void findPetByIdTest() {
 		String petId = "13";
 		Response response = restService.run(Method.GET, petId);
 		Pet myPet = response.as(Pet.class);
@@ -56,11 +55,11 @@ public class PetStoreTests extends BaseApiTest {
 	// GET
 	// "https://petstore.swagger.io/v2/pet/findByStatus?status=pending&status=sold"
 	@Test
-	public void getfindByStatus() {		
-		Response response = restService.run(Method.GET, FIND_BY_STATUS_PATH, "status", Arrays.asList(Status.PENDING.toString()));
+	public void findPetByStatus() {		
+		Response response = restService.run(Method.GET, FIND_BY_STATUS_PATH, "status", Arrays.asList(Status.PENDING.toString()+"463"));
 		List<Pet> petList = Arrays.asList(response.as(Pet[].class));
 		Pet expectedPet = PetFactory.pendingPet();
-		Log.info(expectedPet.toString());
+		log.info(expectedPet.toString());
 		System.out.println(petList.get(0).toString());
 
 		assertTrue(petList.contains(expectedPet));

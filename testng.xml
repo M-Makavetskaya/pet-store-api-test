@@ -4,7 +4,7 @@
       <listener class-name="org.uncommons.reportng.HTMLReporter"/>
       <listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
   </listeners>
-  <test name="Pet Store. Smoke Test Suite"   >
+  <test name="PetStore. Smoke Suite"   >
     <packages>
       <package name="apitests" />
    </packages>

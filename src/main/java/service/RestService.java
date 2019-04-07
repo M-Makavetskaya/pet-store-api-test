@@ -2,22 +2,26 @@ package service;
 
 import static io.restassured.RestAssured.given;
 
+import java.io.PrintStream;
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.io.IoBuilder;
 
 import bean.Pet;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
+import io.restassured.filter.log.RequestLoggingFilter;
+import io.restassured.filter.log.ResponseLoggingFilter;
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import utility.Log;
 
 public class RestService {
-    protected static Logger Log = Logger.getLogger(RestService.class.getName());
+	protected static Logger log = LogManager.getLogger(RestService.class);
 
 	private static final String BASE_URL = "https://petstore.swagger.io";
 	private static final String BASE_PATH = "/v2/pet/";
@@ -27,10 +31,13 @@ public class RestService {
 	protected ResponseSpecification responseSpec;
 
 	public RestService() {
+		PrintStream logStream = IoBuilder.forLogger(log).buildPrintStream();
 		RequestSpecBuilder requestBuilder = new RequestSpecBuilder();
 		requestBuilder.setBaseUri(BASE_URL);
 		requestBuilder.setBasePath(BASE_PATH);
 		requestBuilder.log(LogDetail.URI);
+		requestBuilder.addFilter(ResponseLoggingFilter.logResponseTo(logStream))
+				.addFilter(RequestLoggingFilter.logRequestTo(logStream));
 		requestSpec = requestBuilder.build();
 
 		ResponseSpecBuilder responseBuilder = new ResponseSpecBuilder();
@@ -46,16 +53,16 @@ public class RestService {
 		RequestSpecification request = given().spec(requestSpec).contentType(CONTENT_TYPE);
 		return run(action, request, getParam);
 	}
-	
+
 	public Response run(Method action, String getPath, String paramName, List<String> requestParam) {
-		RequestSpecification request = given().spec(requestSpec).contentType(CONTENT_TYPE)
-				.param(paramName, requestParam);
+		RequestSpecification request = given().spec(requestSpec).contentType(CONTENT_TYPE).param(paramName,
+				requestParam);
 		return run(action, request, getPath);
 	}
-	
+
 	private Response run(Method action, RequestSpecification request, String getParam) {
 		Response response = null;
-		Log.info("URL:" + request.log().uri().toString());
+		log.info("URL:" + request.log().uri().toString());
 		switch (action) {
 		case GET:
 			response = request.when().get(getParam);
@@ -70,7 +77,7 @@ public class RestService {
 			new RuntimeException("Incorrect action:" + action);
 			break;
 		}
-		Log.info("Status code: "+response.getStatusCode());
+		log.info("Status code: " + response.getStatusCode());
 		response.then().log().status();
 		return response;
 	}
