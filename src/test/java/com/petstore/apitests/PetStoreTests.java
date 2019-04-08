@@ -1,4 +1,4 @@
-package apitests;
+package com.petstore.apitests;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -8,9 +8,10 @@ import java.util.List;
 
 import org.testng.annotations.Test;
 
-import bean.Pet;
-import bean.Status;
-import factory.PetFactory;
+import com.petstore.bean.Pet;
+import com.petstore.bean.Status;
+import com.petstore.factory.PetFactory;
+
 import io.restassured.http.Method;
 import io.restassured.response.Response;
 

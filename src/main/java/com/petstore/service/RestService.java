@@ -1,4 +1,4 @@
-package service;
+package com.petstore.service;
 
 import static io.restassured.RestAssured.given;
 
@@ -9,7 +9,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.io.IoBuilder;
 
-import bean.Pet;
+import com.petstore.bean.Pet;
+
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -35,9 +36,12 @@ public class RestService {
 		RequestSpecBuilder requestBuilder = new RequestSpecBuilder();
 		requestBuilder.setBaseUri(BASE_URL);
 		requestBuilder.setBasePath(BASE_PATH);
-		requestBuilder.log(LogDetail.URI);
-		requestBuilder.addFilter(ResponseLoggingFilter.logResponseTo(logStream))
-				.addFilter(RequestLoggingFilter.logRequestTo(logStream));
+//		requestBuilder.log(LogDetail.URI);
+		requestBuilder.addFilter(new RequestLoggingFilter(LogDetail.URI, logStream))
+					.addFilter(new RequestLoggingFilter(LogDetail.BODY, logStream))
+					.addFilter(new ResponseLoggingFilter(LogDetail.STATUS, logStream))
+					.addFilter(new ResponseLoggingFilter(LogDetail.BODY, logStream))
+				;
 		requestSpec = requestBuilder.build();
 
 		ResponseSpecBuilder responseBuilder = new ResponseSpecBuilder();
@@ -62,7 +66,6 @@ public class RestService {
 
 	private Response run(Method action, RequestSpecification request, String getParam) {
 		Response response = null;
-		log.info("URL:" + request.log().uri().toString());
 		switch (action) {
 		case GET:
 			response = request.when().get(getParam);
@@ -77,8 +80,6 @@ public class RestService {
 			new RuntimeException("Incorrect action:" + action);
 			break;
 		}
-		log.info("Status code: " + response.getStatusCode());
-		response.then().log().status();
 		return response;
 	}
 }

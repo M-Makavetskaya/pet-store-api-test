@@ -1,4 +1,4 @@
-package bean;
+package com.petstore.bean;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;

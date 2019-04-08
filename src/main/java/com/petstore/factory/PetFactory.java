@@ -1,13 +1,13 @@
-package factory;
+package com.petstore.factory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import bean.Category;
-import bean.Pet;
-import bean.Status;
-import bean.Tag;
+import com.petstore.bean.Category;
+import com.petstore.bean.Pet;
+import com.petstore.bean.Status;
+import com.petstore.bean.Tag;
 
 public class PetFactory {
 

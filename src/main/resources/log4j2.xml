@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="warn">
+<Configuration status="debug"
+	packages="com.petstore.logging">
 	<Properties>
-		<Property name="basePath">test-output</Property>
+		<Property name="basePath">test-output/</Property>
 	</Properties>
 	<Appenders>
 		<RollingFile name="fileLogger"
@@ -16,20 +17,28 @@
 					modulate="true" />
 			</Policies>
 		</RollingFile>
-		<Console name="console" target="SYSTEM_OUT">
+		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout
 				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
 		</Console>
+		<File name="FileAppender"
+			fileName="../logs/TestNG_${date:yyyyMMdd_HHMMSS}.log" append="false">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level: %msg%n" />
+		</File>
+		<Reporter name="TestReporter">
+			<PatternLayout
+				pattern="%d{HH:mm:ss.SSS} [%t] %-5level: %msg%n" />
+		</Reporter>
 	</Appenders>
 	<Loggers>
-		<Logger name="service" level="info" additivity="true">
-			<appender-ref ref="fileLogger" level="debug" />
-		</Logger>
-		<Logger name="apitests" level="info" additivity="true">
+		<Logger name="com.petstore" level="info" additivity="true">
 			<appender-ref ref="fileLogger" level="debug" />
 		</Logger>
 		<Root level="debug" additivity="false">
-			<appender-ref ref="console" />
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="FileAppender" />
+			<AppenderRef ref="TestReporter" />
 		</Root>
 	</Loggers>
 </Configuration>
