@@ -80,6 +80,7 @@ public class Pet {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this);
 	}
+	
 
 	@Override
 	public int hashCode() {

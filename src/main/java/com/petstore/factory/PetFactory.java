@@ -1,6 +1,5 @@
 package com.petstore.factory;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,11 +11,11 @@ import com.petstore.bean.Tag;
 public class PetFactory {
 
 	public static Pet newPet() {
-		return new Pet(12, new Category(1, "small"), "Snoopy", Arrays.asList(""), null, "available");
+		return new Pet(12, new Category(1, "small"), "Snoopy", Arrays.asList(""), null, Status.AVAILABLE.toString());
 	}
 	
 	public static Pet updatedPet() {
-		return new Pet(12, new Category(1, "medium"), "Snoopy", Arrays.asList(""), null, "available");
+		return new Pet(12, new Category(1, "medium"), "Snoopy", Arrays.asList(""), null, Status.AVAILABLE.toString());
 	}
 	
 	public static Pet pendingPet() {
@@ -25,7 +24,8 @@ public class PetFactory {
 	}
 	
 	public static Pet soldPet() {
-		return new Pet(14, new Category(1, "medium"), "Snoopy", Arrays.asList(""), null, Status.SOLD.toString());
+		List<Tag> tagList = Arrays.asList(new Tag(1, "cute"));
+		return new Pet(14, new Category(1, "medium"), "Snoopy", Arrays.asList(""), tagList, Status.SOLD.toString());
 	}
 	
 }

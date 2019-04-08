@@ -6,8 +6,8 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Category {
 
-	int id;
-	String name;
+	private int id;
+	private String name;
 
 	public Category() {
 

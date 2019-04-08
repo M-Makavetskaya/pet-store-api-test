@@ -5,8 +5,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class Tag {
-	int id;
-	String name;
+	private int id;
+	private String name;
 
 	public Tag() {
 		
